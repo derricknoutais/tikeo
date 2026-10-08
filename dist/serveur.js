@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { ErreurImpression, lireEtat, lireVerdict } from "./etat.js";
 /**
  * Le service local : la page est ouverte dans le NAVIGATEUR du terminal, et
- * l'application EcoPrint, en service de fond, écoute sur 127.0.0.1.
+ * l'application Tikéo, en service de fond, écoute sur 127.0.0.1.
  *
  * C'est le mode à préférer sur un Sunmi V2 Pro : son navigateur est un
  * Chromium 74, mais les applications Android y affichent leurs pages avec le
@@ -83,11 +83,11 @@ function poster(chemin, corps, port, delai) {
         catch (e) {
             if (e instanceof ErreurImpression)
                 throw e;
-            throw new ErreurImpression('absente', "Le service d'impression ne répond plus : l'application EcoPrint est-elle ouverte ?");
+            throw new ErreurImpression('absente', "Le service d'impression ne répond plus : l'application Tikéo est-elle ouverte ?");
         }
         // Une application plus ancienne ne connaît pas cette route : écran client (protocole 2), tiroir (3).
         if (reponse.status === 404) {
-            throw new ErreurImpression('non-pris-en-charge', "Cette version d'EcoPrint ne sait pas faire cela : la mettre à jour.");
+            throw new ErreurImpression('non-pris-en-charge', "L'ancienne application EcoPrint ne sait pas faire cela : la remplacer par Tikéo.");
         }
         let reponseJson;
         try {

@@ -56,7 +56,7 @@ export function mire(options = {}) {
     return {
         blocs: [
             { type: 'texte', texte: 'MIRE', taille: 'titre', gras: true, alignement: 'centre' },
-            { type: 'texte', texte: `ecoprint — ${largeur} points de large`, taille: 'petite', alignement: 'centre' },
+            { type: 'texte', texte: `tikéo — ${largeur} points de large`, taille: 'petite', alignement: 'centre' },
             { type: 'separateur', style: 'double' },
             { type: 'texte', texte: 'Petite (20) — Le vif zéphyr jubile sur les kumquats du clown gracieux.', taille: 'petite' },
             { type: 'texte', texte: 'Normale (24) — Portez ce vieux whisky au juge blond qui fume.' },

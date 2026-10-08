@@ -11,9 +11,9 @@ import { test } from 'node:test';
  */
 const lire = (chemin) => readFileSync(new URL(`../${chemin}`, import.meta.url), 'utf8');
 const pontJs = lire('src/pont.ts');
-const activite = lire('android/app/src/main/java/com/derricknoutais/ecoprint/MainActivity.kt');
-const pontKt = lire('android/app/src/main/java/com/derricknoutais/ecoprint/PontImpression.kt');
-const protocoleKt = lire('android/app/src/main/java/com/derricknoutais/ecoprint/Protocole.kt');
+const activite = lire('android/app/src/main/java/com/derricknoutais/tikeo/MainActivity.kt');
+const pontKt = lire('android/app/src/main/java/com/derricknoutais/tikeo/PontImpression.kt');
+const protocoleKt = lire('android/app/src/main/java/com/derricknoutais/tikeo/Protocole.kt');
 
 test('l’application injecte le pont sous le nom que la page cherche', () => {
     const cote = pontJs.match(/type FenetreAvecPont = Window & \{ (\w+)\?: PontNatif/)[1];

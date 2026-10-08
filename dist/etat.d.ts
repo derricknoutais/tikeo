@@ -1,7 +1,7 @@
 /**
  * Par où passe l'impression :
- *  - `pont` : la page est ouverte DANS l'application EcoPrint, qui lui
- *    injecte `window.EcoPrint` ;
+ *  - `pont` : la page est ouverte DANS l'application Tikéo, qui lui
+ *    injecte `window.Tikeo` ;
  *  - `serveur` : la page est ouverte dans le navigateur du terminal, et
  *    l'application, en service de fond, écoute sur http://127.0.0.1.
  */
@@ -40,7 +40,7 @@ export interface EtatImprimante {
     pilote?: string;
     /** Le terminal reconnu : « SUNMI V2_PRO », « ZCS Z92S »… */
     terminal?: string;
-    /** Absent avec une application EcoPrint antérieure au protocole 2. */
+    /** Absent avec l'ancienne application EcoPrint 0.1 (protocole 1). */
     capacites?: Capacites;
     transport: Transport | null;
 }
@@ -87,7 +87,7 @@ export declare class ErreurImpression extends Error {
     tiroir?: ResultatTiroir;
     constructor(code: string, message: string);
 }
-export declare const MESSAGE_ABSENTE = "Imprimante injoignable : l'application EcoPrint n'est pas ouverte sur ce terminal (ou ce n'est pas un terminal).";
+export declare const MESSAGE_ABSENTE = "Imprimante injoignable : l'application Tik\u00E9o n'est pas ouverte sur ce terminal (ou ce n'est pas un terminal).";
 export declare function etatAbsente(): EtatImprimante;
 /** L'état tel que l'application le décrit en JSON, complété et typé. */
 export declare function lireEtat(brut: unknown, transport: Transport): EtatImprimante;

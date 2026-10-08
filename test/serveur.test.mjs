@@ -86,7 +86,7 @@ test('un service tombé en cours de route est « absente », une réponse illisi
 
 test('dans l’application, le pont passe avant le service', async () => {
     const appels = installerService(() => reponse(200, { code: 'prete', largeur: 384 }));
-    globalThis.window.EcoPrint = { version: () => '1', etat: () => '{"code":"prete","largeur":576}', imprimer() {} };
+    globalThis.window.Tikeo = { version: () => '1', etat: () => '{"code":"prete","largeur":576}', imprimer() {} };
     const etat = await etatImprimante();
     assert.equal(etat.transport, 'pont');
     assert.equal(etat.largeur, 576);

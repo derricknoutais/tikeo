@@ -4,6 +4,7 @@ import { tiroirEscPos, rasterEscPos } from '../dist/escpos.js';
 import { ErreurImpression, lireEtat, lireVerdict } from '../dist/etat.js';
 import { recuExemple } from '../dist/exemples.js';
 import { imprimerRecu, ouvrirTiroir } from '../dist/imprimer.js';
+import { VERSION_PONT } from '../dist/pont.js';
 import { environnementNode } from './outils.mjs';
 
 const env = environnementNode();
@@ -58,7 +59,7 @@ test('une application d’avant le protocole 3 imprime le reçu : le tiroir est 
     const resultat = await imprimerRecu(recuExemple(), { tiroir: true, environnement: env });
     assert.equal(resultat.tiroir.ouvert, false);
     assert.equal(resultat.tiroir.code, 'non-pris-en-charge');
-    assert.match(resultat.tiroir.message, /mettre à jour/);
+    assert.match(resultat.tiroir.message, /remplacer par Tikéo/);
 });
 
 test('sans tiroir demandé, le résultat n’en parle pas', async () => {
@@ -100,16 +101,16 @@ test('hors terminal, ouvrirTiroir dit que l’application est absente', async ()
 
 test('par le pont : ouvrirTiroir appelle l’application — ou dit qu’elle est trop ancienne', async () => {
     const appels = [];
-    globalThis.window.EcoPrint = {
+    globalThis.window.Tikeo = {
         version: () => '3',
         etat: () => JSON.stringify(etatAvecTiroir(true)),
         imprimer: (id, png, options) => {
             appels.push(['imprimer', JSON.parse(options)]);
-            globalThis.window.__ecoprint.retour(id, JSON.stringify({ ok: true, tiroir: { ok: false, code: 'erreur', message: 'Bloqué.' } }));
+            globalThis.window.__tikeo.retour(id, JSON.stringify({ ok: true, tiroir: { ok: false, code: 'erreur', message: 'Bloqué.' } }));
         },
         ouvrirTiroir: (id) => {
             appels.push(['tiroir']);
-            globalThis.window.__ecoprint.retour(id, '{"ok":true}');
+            globalThis.window.__tikeo.retour(id, '{"ok":true}');
         },
     };
     await ouvrirTiroir();
@@ -117,7 +118,7 @@ test('par le pont : ouvrirTiroir appelle l’application — ou dit qu’elle es
     assert.deepEqual(appels, [['tiroir'], ['imprimer', { avance: 3, support: 'recu', copies: 1, tiroir: true }]]);
     assert.deepEqual(resultat.tiroir, { ouvert: false, code: 'erreur', message: 'Bloqué.' });
 
-    globalThis.window.EcoPrint = { version: () => '2', etat: () => JSON.stringify({ code: 'prete', capacites: { massicot: false } }), imprimer() {} };
+    globalThis.window.Tikeo = { version: () => '2', etat: () => JSON.stringify({ code: 'prete', capacites: { massicot: false } }), imprimer() {} };
     await assert.rejects(ouvrirTiroir(), (e) => e.code === 'non-pris-en-charge' && /mettre à jour/.test(e.message));
 });
 
@@ -155,7 +156,7 @@ test('un reçu qui échoue chez le terminal dit quand même si le tiroir s’est
 test('le retour d’une copie plus ancienne du paquet est remplacé : le tiroir n’est pas perdu en route', async () => {
     // Une copie du protocole 2 a déjà installé son retour, qui ignore le tiroir.
     const attentes = new Map();
-    globalThis.window.__ecoprint = {
+    globalThis.window.__tikeo = {
         attentes,
         retour(id) {
             const a = attentes.get(id);
@@ -164,20 +165,20 @@ test('le retour d’une copie plus ancienne du paquet est remplacé : le tiroir 
             a.resoudre({ simulation: false });
         },
     };
-    globalThis.window.EcoPrint = {
+    globalThis.window.Tikeo = {
         version: () => '3',
         etat: () => JSON.stringify(etatAvecTiroir(true)),
-        imprimer: (id) => globalThis.window.__ecoprint.retour(id, JSON.stringify({ ok: true, tiroir: { ok: true } })),
+        imprimer: (id) => globalThis.window.__tikeo.retour(id, JSON.stringify({ ok: true, tiroir: { ok: true } })),
     };
     const resultat = await imprimerRecu(recuExemple(), { tiroir: true, environnement: env });
     assert.deepEqual(resultat.tiroir, { ouvert: true });
-    assert.equal(globalThis.window.__ecoprint.version, 3);
-    assert.equal(globalThis.window.__ecoprint.attentes, attentes, 'les attentes en cours sont gardées');
+    assert.equal(globalThis.window.__tikeo.version, Number(VERSION_PONT));
+    assert.equal(globalThis.window.__tikeo.attentes, attentes, 'les attentes en cours sont gardées');
 
     // Une copie plus ancienne qui arrive après garde le retour le plus récent.
-    const recent = globalThis.window.__ecoprint;
+    const recent = globalThis.window.__tikeo;
     await imprimerRecu(recuExemple(), { environnement: env });
-    assert.equal(globalThis.window.__ecoprint, recent);
+    assert.equal(globalThis.window.__tikeo, recent);
 });
 
 test('useImprimante().tiroir dit si le tiroir s’est ouvert, que le reçu sorte ou non', async () => {

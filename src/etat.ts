@@ -2,8 +2,8 @@ import { LARGEUR_58MM } from './metriques.ts';
 
 /**
  * Par où passe l'impression :
- *  - `pont` : la page est ouverte DANS l'application EcoPrint, qui lui
- *    injecte `window.EcoPrint` ;
+ *  - `pont` : la page est ouverte DANS l'application Tikéo, qui lui
+ *    injecte `window.Tikeo` ;
  *  - `serveur` : la page est ouverte dans le navigateur du terminal, et
  *    l'application, en service de fond, écoute sur http://127.0.0.1.
  */
@@ -52,7 +52,7 @@ export interface EtatImprimante {
     pilote?: string;
     /** Le terminal reconnu : « SUNMI V2_PRO », « ZCS Z92S »… */
     terminal?: string;
-    /** Absent avec une application EcoPrint antérieure au protocole 2. */
+    /** Absent avec l'ancienne application EcoPrint 0.1 (protocole 1). */
     capacites?: Capacites;
     transport: Transport | null;
 }
@@ -110,7 +110,7 @@ export class ErreurImpression extends Error {
 }
 
 export const MESSAGE_ABSENTE =
-    "Imprimante injoignable : l'application EcoPrint n'est pas ouverte sur ce terminal (ou ce n'est pas un terminal).";
+    "Imprimante injoignable : l'application Tikéo n'est pas ouverte sur ce terminal (ou ce n'est pas un terminal).";
 
 export function etatAbsente(): EtatImprimante {
     return { code: 'absente', message: MESSAGE_ABSENTE, largeur: LARGEUR_58MM, transport: null };

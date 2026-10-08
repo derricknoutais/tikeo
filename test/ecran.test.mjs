@@ -79,7 +79,7 @@ test('sans écran client, afficherClient le dit — et n’envoie rien', async (
 test('une application d’avant le protocole 2 est signalée, pas prise pour une panne', async () => {
     // Pas de capacités dans l'état : l'application ne connaît pas l'écran client.
     installerService(() => reponse(200, { code: 'prete', largeur: 384 }));
-    await assert.rejects(afficherClient(ecranExemple(), { environnement: env }), (e) => e.code === 'non-pris-en-charge' && /mettre à jour/.test(e.message));
+    await assert.rejects(afficherClient(ecranExemple(), { environnement: env }), (e) => e.code === 'non-pris-en-charge' && /remplacer par Tikéo/.test(e.message));
 
     installerService(() => reponse(404, { ok: false, code: 'introuvable' }));
     await assert.rejects(afficherAuServeur('AAAA'), (e) => e.code === 'non-pris-en-charge');
@@ -94,35 +94,35 @@ test('effacer l’écran passe par /effacer, sans image', async () => {
 
 test('par le pont, afficher et effacer appellent l’application — ou disent qu’elle est trop ancienne', async () => {
     const appels = [];
-    globalThis.window.EcoPrint = {
+    globalThis.window.Tikeo = {
         version: () => '2',
         etat: () => JSON.stringify(ETAT_ZCS),
         imprimer() {},
         afficher: (id, png) => {
             appels.push(['afficher', png]);
-            globalThis.window.__ecoprint.retour(id, '{"ok":true}');
+            globalThis.window.__tikeo.retour(id, '{"ok":true}');
         },
         effacer: (id) => {
             appels.push(['effacer']);
-            globalThis.window.__ecoprint.retour(id, '{"ok":true}');
+            globalThis.window.__tikeo.retour(id, '{"ok":true}');
         },
     };
     await afficherParPont('iVBORw0KGgo=');
     await afficherParPont(null);
     assert.deepEqual(appels, [['afficher', 'iVBORw0KGgo='], ['effacer']]);
 
-    globalThis.window.EcoPrint = { version: () => '1', etat: () => '{"code":"prete"}', imprimer() {} };
+    globalThis.window.Tikeo = { version: () => '1', etat: () => '{"code":"prete"}', imprimer() {} };
     await assert.rejects(afficherParPont('AAAA'), (e) => e.code === 'non-pris-en-charge');
 });
 
 test('une étiquette part avec son support et ses exemplaires', async () => {
     let options;
-    globalThis.window.EcoPrint = {
+    globalThis.window.Tikeo = {
         version: () => '2',
         etat: () => JSON.stringify(ETAT_ZCS),
         imprimer: (id, png, o) => {
             options = JSON.parse(o);
-            globalThis.window.__ecoprint.retour(id, '{"ok":true}');
+            globalThis.window.__tikeo.retour(id, '{"ok":true}');
         },
     };
     await envoyerParPont('AAAA', { support: 'etiquette', copies: 3 });

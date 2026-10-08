@@ -1,7 +1,7 @@
 import { type EtatImprimante, type OptionsEnvoi, type ResultatImpression } from './etat.ts';
 /**
  * Le service local : la page est ouverte dans le NAVIGATEUR du terminal, et
- * l'application EcoPrint, en service de fond, écoute sur 127.0.0.1.
+ * l'application Tikéo, en service de fond, écoute sur 127.0.0.1.
  *
  * C'est le mode à préférer sur un Sunmi V2 Pro : son navigateur est un
  * Chromium 74, mais les applications Android y affichent leurs pages avec le

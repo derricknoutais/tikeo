@@ -1,23 +1,25 @@
 import { ErreurImpression, etatAbsente, lireEtat, lireVerdict } from "./etat.js";
 /**
- * Le pont direct : la page est ouverte DANS l'application EcoPrint, qui
- * l'affiche dans sa WebView et lui injecte `window.EcoPrint`. Ses
- * réponses, asynchrones, reviennent par `window.__ecoprint.retour`.
+ * Le pont direct : la page est ouverte DANS l'application Tikéo, qui
+ * l'affiche dans sa WebView et lui injecte `window.Tikeo`. Ses
+ * réponses, asynchrones, reviennent par `window.__tikeo.retour`.
  */
 /**
  * Version du protocole entre la page et l'application.
  * 2 : étiquettes (`support`, `copies`), écran client (`afficher`, `effacer`), capacités dans l'état.
  * 3 : tiroir-caisse (`ouvrirTiroir`, option `tiroir` d'une impression).
+ * 4 : l'application devient Tikéo — le pont s'appelle `window.Tikeo`, ses réponses `window.__tikeo`.
+ *     Une page d'avant, ouverte dans Tikéo, ne trouve plus `window.EcoPrint` et passe par le service local.
  */
-export const VERSION_PONT = '3';
+export const VERSION_PONT = '4';
 function fenetre() {
     return typeof window === 'undefined' ? null : window;
 }
 function pont() {
     const f = fenetre();
-    return f && f.EcoPrint ? f.EcoPrint : null;
+    return f && f.Tikeo ? f.Tikeo : null;
 }
-/** Vrai si la page est ouverte dans l'application EcoPrint. */
+/** Vrai si la page est ouverte dans l'application Tikéo. */
 export function pontDisponible() {
     return pont() !== null;
 }
@@ -55,7 +57,7 @@ export function envoyerParPont(pngBase64, options = {}) {
 export function ouvrirTiroirParPont(options = {}) {
     const p = pont();
     if (p && typeof p.ouvrirTiroir !== 'function') {
-        return Promise.reject(new ErreurImpression('non-pris-en-charge', "Cette version d'EcoPrint ne pilote pas le tiroir-caisse : la mettre à jour."));
+        return Promise.reject(new ErreurImpression('non-pris-en-charge', "Cette version de Tikéo ne pilote pas le tiroir-caisse : la mettre à jour."));
     }
     return demander((natif, id) => natif.ouvrirTiroir(id), options.delai || 15000, "Le tiroir-caisse n'a pas répondu");
 }
@@ -63,7 +65,7 @@ export function ouvrirTiroirParPont(options = {}) {
 export function afficherParPont(pngBase64, options = {}) {
     const p = pont();
     if (p && (typeof p.afficher !== 'function' || typeof p.effacer !== 'function')) {
-        return Promise.reject(new ErreurImpression('non-pris-en-charge', "Cette version d'EcoPrint ne pilote pas l'écran client : la mettre à jour."));
+        return Promise.reject(new ErreurImpression('non-pris-en-charge', "Cette version de Tikéo ne pilote pas l'écran client : la mettre à jour."));
     }
     return demander((natif, id) => (pngBase64 === null ? natif.effacer(id) : natif.afficher(id, pngBase64)), options.delai || 15000, "L'écran client n'a pas répondu");
 }
@@ -99,7 +101,7 @@ function demander(appel, delai, sansReponse) {
  * les lit dans la même table, et son verdict en dit plus, jamais moins.
  */
 function installerRetours(f) {
-    const existants = f.__ecoprint;
+    const existants = f.__tikeo;
     if (existants && (existants.version || 0) >= Number(VERSION_PONT))
         return existants;
     const attentes = existants ? existants.attentes : new Map();
@@ -121,6 +123,6 @@ function installerRetours(f) {
             }
         },
     };
-    f.__ecoprint = retours;
+    f.__tikeo = retours;
     return retours;
 }

@@ -1,4 +1,4 @@
-package com.derricknoutais.ecoprint
+package com.derricknoutais.tikeo
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -23,14 +23,19 @@ class ServiceImpression : Service() {
     override fun onCreate() {
         super.onCreate()
         passerAuPremierPlan()
-        val app = application as EcoPrintApp
+        val app = application as TikeoApp
         serveur = ServeurImpression(app, getExternalFilesDir(null)).also {
             it.demarrer()
             actif = it
         }
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int = START_STICKY
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        // Le port était pris au démarrage (EcoPrint ou Sunmi Print encore installée) : on réessaie à
+        // chaque ouverture de Tikéo — désinstaller l'ancienne puis rouvrir Tikéo suffit.
+        serveur?.let { if (!it.enMarche) it.demarrer() }
+        return START_STICKY
+    }
 
     override fun onDestroy() {
         serveur?.arreter()

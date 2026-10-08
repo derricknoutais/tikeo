@@ -1,4 +1,4 @@
-package com.derricknoutais.ecoprint
+package com.derricknoutais.tikeo
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -14,8 +14,9 @@ object Protocole {
     /**
      * Doit rester égale à VERSION_PONT dans src/pont.ts.
      * 2 : étiquettes, écran client, capacités. 3 : tiroir-caisse.
+     * 4 : l'application devient Tikéo — le pont s'appelle `window.Tikeo`.
      */
-    const val VERSION = "3"
+    const val VERSION = "4"
 
     /** `{avance, support: 'recu' | 'etiquette', copies, tiroir}`, bornés : une page qui se trompe ne vide pas le rouleau. */
     fun options(json: JSONObject?): OptionsImpression = OptionsImpression(

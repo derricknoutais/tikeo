@@ -26,7 +26,7 @@ export declare function imprimerRecu(recu: Recu, options?: OptionsImpression): P
 /**
  * Ouvre le tiroir-caisse branché sur le terminal — sans reçu : vente sans
  * ticket, rendu de monnaie… Se rejette avec une `ErreurImpression` :
- * `non-pris-en-charge` si EcoPrint sait que le terminal n'a pas de prise
+ * `non-pris-en-charge` si Tikéo sait que le terminal n'a pas de prise
  * (`capacites.tiroir === false` : Sunmi portable) ou si l'application est trop
  * ancienne, `absente` hors terminal, `refusee` si l'adresse n'est pas
  * autorisée. Quand `capacites.tiroir` vaut `null` (ZCS), le pilote ne peut pas

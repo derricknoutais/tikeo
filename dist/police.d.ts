@@ -7,6 +7,6 @@
  * qu'à partir de Chrome 63, et le WebView d'un Sunmi V2 Pro est en 62. Un
  * bundler ne l'embarque de toute façon que dans le code qui dessine.
  */
-export declare const FAMILLE = "EcoPrint Roboto";
+export declare const FAMILLE = "Tikeo Roboto";
 /** Charge Roboto Medium et Bold une seule fois ; renvoie le nom de la famille. */
 export declare function chargerPolice(): Promise<string>;

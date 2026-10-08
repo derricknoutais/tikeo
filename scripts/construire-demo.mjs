@@ -29,7 +29,7 @@ await build({
     legalComments: 'eof',
     // Ce que le bundle embarque d'autrui, et à quelles conditions.
     banner: {
-        js: '/*! ecoprint — page de test. Embarque qrcode-generator (© 2009 Kazuhiko Arase, licence MIT : '
+        js: '/*! tikeo — page de test. Embarque qrcode-generator (© 2009 Kazuhiko Arase, licence MIT : '
             + 'LICENSE-qrcode-generator.txt) et Roboto (© The Roboto Project Authors, SIL Open Font License 1.1 : LICENSE-Roboto.txt). */',
     },
     logLevel: 'warning',

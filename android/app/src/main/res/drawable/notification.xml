@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Petite icône de notification : blanche sur transparent, comme Android l'exige. -->
+<!-- Petite icône de notification Tikéo : le dessin « 16 px » de la planche, d'une seule couleur.
+     Produit par scripts/construire-marque.mjs. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-    <!-- evenOdd : les trois lignes du ticket sont évidées dans la forme. -->
-    <path
-        android:fillColor="#FFFFFFFF"
-        android:fillType="evenOdd"
-        android:pathData="M6,2h12v18l-1.5,-1.2 -1.5,1.2 -1.5,-1.2 -1.5,1.2 -1.5,-1.2 -1.5,1.2 -1.5,-1.2 -1.5,1.2z M8.5,6v1.5h7v-1.5z M8.5,9v1.5h5v-1.5z M8.5,12v1.5h7v-1.5z" />
+    android:viewportWidth="230"
+    android:viewportHeight="230">
+    <group
+        android:translateX="115"
+        android:translateY="96">
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillType="evenOdd"
+            android:pathData="M-70,-74 H70 A14,14 0 0 1 84,-60 V-16 A14,14 0 0 1 70,-2 H-70 A14,14 0 0 1 -84,-16 V-60 A14,14 0 0 1 -70,-74 Z M-46,-50 H2 A10,10 0 0 1 12,-40 V-40 A10,10 0 0 1 2,-30 H-46 A10,10 0 0 1 -56,-40 V-40 A10,10 0 0 1 -46,-50 Z M38,-40 A16,16 0 1 0 70,-40 A16,16 0 1 0 38,-40 Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillType="evenOdd"
+            android:pathData="M-71,12 H71 A25,25 0 0 1 96,37 V37 A25,25 0 0 1 71,62 H-71 A25,25 0 0 1 -96,37 V37 A25,25 0 0 1 -71,12 Z M-53,30 H53 A7,7 0 0 1 60,37 V37 A7,7 0 0 1 53,44 H-53 A7,7 0 0 1 -60,37 V37 A7,7 0 0 1 -53,30 Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillType="evenOdd"
+            android:pathData="M-56,70 H56 V112 H-56 Z" />
+    </group>
 </vector>

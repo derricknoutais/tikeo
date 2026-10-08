@@ -81,7 +81,7 @@ export async function afficherClient(contenu: Recu, options: OptionsEcran = {}):
     if (!format) {
         throw new ErreurImpression(
             'non-pris-en-charge',
-            etat.capacites ? "Ce terminal n'a pas d'écran client." : "Cette version d'EcoPrint ne pilote pas l'écran client : la mettre à jour.",
+            etat.capacites ? "Ce terminal n'a pas d'écran client." : "L'ancienne application EcoPrint ne pilote pas l'écran client : la remplacer par Tikéo.",
         );
     }
 

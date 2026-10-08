@@ -1,4 +1,4 @@
-package com.derricknoutais.ecoprint
+package com.derricknoutais.tikeo
 
 import android.content.BroadcastReceiver
 import android.content.Context

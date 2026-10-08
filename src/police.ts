@@ -9,7 +9,7 @@ import { ROBOTO_500, ROBOTO_700 } from './police-donnees.ts';
  * qu'à partir de Chrome 63, et le WebView d'un Sunmi V2 Pro est en 62. Un
  * bundler ne l'embarque de toute façon que dans le code qui dessine.
  */
-export const FAMILLE = 'EcoPrint Roboto';
+export const FAMILLE = 'Tikeo Roboto';
 
 let chargement: Promise<string> | null = null;
 

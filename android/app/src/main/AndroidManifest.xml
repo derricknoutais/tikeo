@@ -17,7 +17,7 @@
          de ZCS) est déclaré dans son propre manifeste, fusionné dans celui-ci. -->
 
     <application
-        android:name=".EcoPrintApp"
+        android:name=".TikeoApp"
         android:allowBackup="false"
         android:icon="@mipmap/icone"
         android:label="@string/nom"

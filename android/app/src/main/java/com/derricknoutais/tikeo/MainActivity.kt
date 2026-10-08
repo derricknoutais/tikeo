@@ -1,4 +1,4 @@
-package com.derricknoutais.ecoprint
+package com.derricknoutais.tikeo
 
 import android.Manifest
 import android.app.Activity
@@ -28,7 +28,7 @@ import androidx.webkit.WebViewAssetLoader
 /**
  * Le mode coque : une page web plein écran, avec ce que le navigateur ne lui
  * donne pas sur un terminal — l'imprimante par le pont direct
- * (window.EcoPrint) et la caméra (relais de la permission Android).
+ * (window.Tikeo) et la caméra (relais de la permission Android).
  *
  * Sert d'abord à la page de test embarquée. Pour une application web, le
  * navigateur du terminal est souvent le meilleur choix : cette WebView est
@@ -39,7 +39,7 @@ class MainActivity : Activity() {
     lateinit var webView: WebView
         private set
 
-    private val app get() = application as EcoPrintApp
+    private val app get() = application as TikeoApp
     private val reglages get() = app.reglages
 
     /** L'adresse de la page affichée — lue par le pont, depuis un autre fil. */
@@ -70,7 +70,14 @@ class MainActivity : Activity() {
         if (BuildConfig.DEBUG) WebView.setWebContentsDebuggingEnabled(true)
 
         webView = WebView(this)
-        setContentView(webView)
+        // La WebView ignore sa propre marge intérieure : c'est un cadre qui prend celle des barres du
+        // système et du clavier (Android 15), et la WebView, dedans, est vraiment redimensionnée.
+        val cadre = android.widget.FrameLayout(this).apply {
+            setBackgroundColor(android.graphics.Color.BLACK)
+            addView(webView, android.widget.FrameLayout.LayoutParams(-1, -1))
+        }
+        setContentView(cadre)
+        reserverBarresSysteme(cadre, sombre = true, couleurEtat = android.graphics.Color.BLACK)
         configurer()
 
         if (etatSauve != null) webView.restoreState(etatSauve) else webView.loadUrl(adresse)
@@ -90,10 +97,10 @@ class MainActivity : Activity() {
             // Le flux de la caméra démarre sans geste supplémentaire.
             mediaPlaybackRequiresUserGesture = false
             allowFileAccess = false
-            userAgentString = "$userAgentString EcoPrint/${BuildConfig.VERSION_NAME}"
+            userAgentString = "$userAgentString Tikeo/${BuildConfig.VERSION_NAME}"
         }
 
-        webView.addJavascriptInterface(PontImpression(this, app), "EcoPrint")
+        webView.addJavascriptInterface(PontImpression(this, app), "Tikeo")
 
         webView.webViewClient = object : WebViewClient() {
             override fun shouldInterceptRequest(vue: WebView, requete: WebResourceRequest): WebResourceResponse? =
@@ -129,8 +136,7 @@ class MainActivity : Activity() {
                     gestionnaire.cancel()
                     signalerPageInjoignable(
                         erreur.url,
-                        if (estAdressePrivee(hote)) "Certificat refusé. Serveur de développement : cocher « certificat auto-signé » dans les réglages."
-                        else "Certificat refusé : la connexion n'est pas sûre.",
+                        if (estAdressePrivee(hote)) textes.certificatRefuseLocal else textes.certificatRefuse,
                     )
                 }
             }
@@ -228,17 +234,20 @@ class MainActivity : Activity() {
 
     private fun signalerPageInjoignable(adresse: String, raison: String) {
         AlertDialog.Builder(this)
-            .setTitle("Page injoignable")
+            .setTitle(textes.pageInjoignable)
             .setMessage("$adresse\n\n$raison")
-            .setPositiveButton("Réessayer") { _, _ -> webView.reload() }
-            .setNeutralButton("Réglages") { _, _ -> ouvrirReglages() }
+            .setPositiveButton(textes.reessayer) { _, _ -> webView.reload() }
+            .setNeutralButton(textes.ongletAdresses) { _, _ -> ouvrirReglages(AccueilActivity.Vue.ADRESSES) }
             .setCancelable(true)
             .show()
     }
 
-    private fun ouvrirReglages() {
-        startActivity(Intent(this, AccueilActivity::class.java))
+    private fun ouvrirReglages(vue: AccueilActivity.Vue = AccueilActivity.Vue.ACCUEIL) {
+        startActivity(Intent(this, AccueilActivity::class.java).putExtra(AccueilActivity.EXTRA_VUE, vue.name))
     }
+
+    /** Les textes dans la langue choisie dans l'application. */
+    private val textes get() = Textes(reglages.langue == "en")
 
     @Deprecated("Retour arrière d'Activity, suffisant sans AndroidX")
     override fun onBackPressed() {
@@ -247,14 +256,14 @@ class MainActivity : Activity() {
             return
         }
         AlertDialog.Builder(this)
-            .setItems(arrayOf("Accueil et réglages", "Page de test de l'imprimante", "Quitter")) { _, choix ->
+            .setItems(arrayOf(textes.menuAccueil, textes.menuTest, textes.quitter)) { _, choix ->
                 when (choix) {
                     0 -> ouvrirReglages()
                     1 -> webView.loadUrl(PAGE_DE_TEST)
                     else -> finish()
                 }
             }
-            .setNegativeButton("Annuler", null)
+            .setNegativeButton(textes.annuler, null)
             .show()
     }
 
@@ -272,7 +281,7 @@ class MainActivity : Activity() {
     companion object {
         const val EXTRA_ADRESSE = "adresse"
         const val PAGE_DE_TEST = "https://appassets.androidplatform.net/assets/test/index.html"
-        private const val JOURNAL = "EcoPrint"
+        private const val JOURNAL = "Tikeo"
         private const val DEMANDE_CAMERA = 1
         private const val DEMANDE_FICHIERS = 2
 

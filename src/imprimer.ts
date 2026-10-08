@@ -48,9 +48,9 @@ export async function imprimerRecu(recu: Recu, options: OptionsImpression = {}):
     const envoi: OptionsEnvoi = { avance: options.avance, support: options.support, copies: options.copies, tiroir: options.tiroir, delai: options.delai };
     const resultat = await (etat.transport === 'pont' ? envoyerParPont(donnees, envoi) : envoyerAuServeur(donnees, { ...envoi, port: options.port }));
 
-    // Une application antérieure au protocole 3 imprime sans rien dire du tiroir.
+    // L'ancienne application EcoPrint (avant la 0.2, protocole 3) imprime sans rien dire du tiroir.
     if (options.tiroir && !resultat.tiroir) {
-        resultat.tiroir = { ouvert: false, code: 'non-pris-en-charge', message: "Cette version d'EcoPrint ne pilote pas le tiroir-caisse : la mettre à jour." };
+        resultat.tiroir = { ouvert: false, code: 'non-pris-en-charge', message: "L'ancienne application EcoPrint ne pilote pas le tiroir-caisse : la remplacer par Tikéo." };
     }
     return resultat;
 }
@@ -58,7 +58,7 @@ export async function imprimerRecu(recu: Recu, options: OptionsImpression = {}):
 /**
  * Ouvre le tiroir-caisse branché sur le terminal — sans reçu : vente sans
  * ticket, rendu de monnaie… Se rejette avec une `ErreurImpression` :
- * `non-pris-en-charge` si EcoPrint sait que le terminal n'a pas de prise
+ * `non-pris-en-charge` si Tikéo sait que le terminal n'a pas de prise
  * (`capacites.tiroir === false` : Sunmi portable) ou si l'application est trop
  * ancienne, `absente` hors terminal, `refusee` si l'adresse n'est pas
  * autorisée. Quand `capacites.tiroir` vaut `null` (ZCS), le pilote ne peut pas

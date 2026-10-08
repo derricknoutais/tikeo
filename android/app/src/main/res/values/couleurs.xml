@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Produit par scripts/construire-marque.mjs. -->
+<resources>
+    <color name="icone_fond">#3B3B3D</color>
+</resources>

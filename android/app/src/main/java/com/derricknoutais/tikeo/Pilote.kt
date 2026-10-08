@@ -1,4 +1,4 @@
-package com.derricknoutais.ecoprint
+package com.derricknoutais.tikeo
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -22,10 +22,10 @@ data class OptionsImpression(
 )
 
 /**
- * Ce qu'EcoPrint attend d'un pilote de terminal.
+ * Ce que Tikéo attend d'un pilote de terminal.
  *
  * Chaque marque a le sien, dans son propre dépôt — sunmi-print, zcs-print —,
- * sans rien savoir d'EcoPrint : ils parlent le même vocabulaire JSON
+ * sans rien savoir de Tikéo : ils parlent le même vocabulaire JSON
  * (`{code, message, largeur, modele}`, `{ok}` ou `{ok: false, code, message}`),
  * et ces quelques lignes les branchent sur l'application.
  */

@@ -4,7 +4,7 @@ import { test } from 'node:test';
 
 /**
  * Chrome 62 : le WebView système d'un Sunmi V2 Pro (Android 7.1), celui
- * qu'utilise l'application EcoPrint pour sa page de test et en mode coque.
+ * qu'utilise l'application Tikéo pour sa page de test et en mode coque.
  * Son navigateur est un Chromium 74, mais c'est la version la plus ancienne
  * qui fait loi : une syntaxe trop récente empêche le script entier de se
  * charger, une API trop récente casse l'écran au premier appel.

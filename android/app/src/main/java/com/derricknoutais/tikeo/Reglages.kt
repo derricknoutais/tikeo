@@ -1,4 +1,4 @@
-package com.derricknoutais.ecoprint
+package com.derricknoutais.tikeo
 
 import android.content.Context
 import android.net.Uri
@@ -22,6 +22,32 @@ class Reglages(contexte: Context) {
     var certificatLocal: Boolean
         get() = preferences.getBoolean("certificat_local", false)
         set(valeur) = preferences.edit().putBoolean("certificat_local", valeur).apply()
+
+    /** La langue de l'interface : `fr` ou `en`. */
+    var langue: String
+        get() = preferences.getString("langue", "fr") ?: "fr"
+        set(valeur) = preferences.edit().putString("langue", valeur).apply()
+
+    /** Vrai une fois la mise en route parcourue (ou quittée) : elle ne s'ouvre plus d'elle-même. */
+    var miseEnRouteFaite: Boolean
+        get() = preferences.getBoolean("mise_en_route_faite", false)
+        set(valeur) = preferences.edit().putBoolean("mise_en_route_faite", valeur).apply()
+
+    /** Les origines autorisées, dans l'ordre : la première est la principale. Sans doublon. */
+    fun listeOrigines(): List<String> = adresses.lines().mapNotNull { origine(it) }.distinct()
+
+    /** Ajoute une adresse, ramenée à son origine. Faux si elle n'est pas valide ou déjà là. */
+    fun ajouterOrigine(texte: String): Boolean {
+        val o = origine(texte) ?: return false
+        val liste = listeOrigines()
+        if (o in liste) return false
+        adresses = (liste + o).joinToString("\n")
+        return true
+    }
+
+    fun retirerOrigine(o: String) {
+        adresses = listeOrigines().filter { it != o }.joinToString("\n")
+    }
 
     /** La première adresse : celle qu'on ouvre dans l'application en mode coque. */
     val adressePrincipale: String?

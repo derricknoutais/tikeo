@@ -43,8 +43,8 @@ function journal(message: string, genre: 'ok' | 'erreur' | 'info' = 'info'): voi
 }
 
 const TRANSPORTS = {
-    pont: () => `ouverte dans EcoPrint (pont direct, protocole ${versionPont()})`,
-    serveur: () => 'navigateur — service local de EcoPrint',
+    pont: () => `ouverte dans Tikéo (pont direct, protocole ${versionPont()})`,
+    serveur: () => 'navigateur — service local de Tikéo',
     aucun: () => 'aucune — aperçu seulement',
 };
 
@@ -170,8 +170,8 @@ montrer(recuAffiche);
 afficherEtat().then(() => {
     const transport = dernierEtat && dernierEtat.transport;
     journal(
-        transport === 'pont' ? 'Page ouverte dans EcoPrint : impression par le pont direct.'
-        : transport === 'serveur' ? 'Service local de EcoPrint détecté.'
+        transport === 'pont' ? 'Page ouverte dans Tikéo : impression par le pont direct.'
+        : transport === 'serveur' ? 'Service local de Tikéo détecté.'
         : "Ni application ni service : l'impression est impossible ici, l'aperçu reste exact.",
     );
 });

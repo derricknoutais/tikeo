@@ -1,16 +1,18 @@
 import { type EtatImprimante, type OptionsEnvoi, type ResultatImpression } from './etat.ts';
 /**
- * Le pont direct : la page est ouverte DANS l'application EcoPrint, qui
- * l'affiche dans sa WebView et lui injecte `window.EcoPrint`. Ses
- * réponses, asynchrones, reviennent par `window.__ecoprint.retour`.
+ * Le pont direct : la page est ouverte DANS l'application Tikéo, qui
+ * l'affiche dans sa WebView et lui injecte `window.Tikeo`. Ses
+ * réponses, asynchrones, reviennent par `window.__tikeo.retour`.
  */
 /**
  * Version du protocole entre la page et l'application.
  * 2 : étiquettes (`support`, `copies`), écran client (`afficher`, `effacer`), capacités dans l'état.
  * 3 : tiroir-caisse (`ouvrirTiroir`, option `tiroir` d'une impression).
+ * 4 : l'application devient Tikéo — le pont s'appelle `window.Tikeo`, ses réponses `window.__tikeo`.
+ *     Une page d'avant, ouverte dans Tikéo, ne trouve plus `window.EcoPrint` et passe par le service local.
  */
-export declare const VERSION_PONT = "3";
-/** Vrai si la page est ouverte dans l'application EcoPrint. */
+export declare const VERSION_PONT = "4";
+/** Vrai si la page est ouverte dans l'application Tikéo. */
 export declare function pontDisponible(): boolean;
 /** Version du protocole annoncée par l'application, ou `null` hors application. */
 export declare function versionPont(): string | null;

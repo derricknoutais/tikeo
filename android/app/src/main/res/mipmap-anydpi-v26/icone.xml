@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- L'icône Tikéo sur Android 8 et plus. Produit par scripts/construire-marque.mjs. -->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/icone_fond" />
+    <foreground android:drawable="@drawable/icone_avant" />
+    <monochrome android:drawable="@drawable/icone_monochrome" />
+</adaptive-icon>

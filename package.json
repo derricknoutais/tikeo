@@ -1,7 +1,7 @@
 {
-    "name": "@derricknoutais/ecoprint",
-    "version": "0.2.0",
-    "description": "Imprimer des reçus sur les terminaux Android à imprimante intégrée — Sunmi, ZCS — depuis une application web : rendu du reçu en image dans la page, impression par l'application EcoPrint. Compatible avec les WebView anciens des terminaux (Chrome 62).",
+    "name": "@derricknoutais/tikeo",
+    "version": "0.3.0",
+    "description": "Imprimer des reçus sur les terminaux Android à imprimante intégrée — Sunmi, ZCS — depuis une application web : rendu du reçu en image dans la page, impression par l'application Tikéo. Compatible avec les WebView anciens des terminaux (Chrome 62).",
     "type": "module",
     "private": true,
     "license": "UNLICENSED",
@@ -24,9 +24,10 @@
         "README.md"
     ],
     "scripts": {
-        "build": "tsc -p tsconfig.json && node scripts/construire-demo.mjs",
+        "build": "tsc -p tsconfig.json && node scripts/construire-demo.mjs && node scripts/construire-apercus.mjs",
         "test": "npm run build && node --test test/*.test.mjs",
-        "police": "node scripts/generer-police.mjs"
+        "police": "node scripts/generer-police.mjs",
+        "marque": "node scripts/construire-marque.mjs"
     },
     "peerDependencies": {
         "vue": "^3.2"

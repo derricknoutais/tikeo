@@ -4,16 +4,16 @@ plugins {
 }
 
 android {
-    namespace = "com.derricknoutais.ecoprint"
+    namespace = "com.derricknoutais.tikeo"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.derricknoutais.ecoprint"
+        applicationId = "com.derricknoutais.tikeo"
         // Le Sunmi V2 Pro tourne sous Android 7.1 (API 25) ; le ZCS Z92S sous Android 16.
         minSdk = 24
         targetSdk = 35
-        versionCode = 5
-        versionName = "0.2.0"
+        versionCode = 6
+        versionName = "0.3.0"
     }
 
     buildFeatures {

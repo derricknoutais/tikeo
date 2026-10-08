@@ -1,4 +1,4 @@
-package com.derricknoutais.ecoprint
+package com.derricknoutais.tikeo
 
 import android.util.Log
 import android.webkit.JavascriptInterface
@@ -6,8 +6,8 @@ import org.json.JSONException
 import org.json.JSONObject
 
 /**
- * Ce que la page voit sous le nom `window.EcoPrint` — le protocole que parle
- * src/pont.ts du paquet web ecoprint.
+ * Ce que la page voit sous le nom `window.Tikeo` — le protocole que parle
+ * src/pont.ts du paquet web tikeo.
  *
  * Les méthodes tournent sur le fil du pont JavaScript, pas sur celui de
  * l'interface : les réponses repassent par `runOnUiThread`.
@@ -19,7 +19,7 @@ import org.json.JSONObject
  * à une page autorisée passe ce contrôle — d'où le conseil du README de ne pas
  * intégrer de cadre tiers dans une page autorisée.
  */
-class PontImpression(private val activite: MainActivity, private val app: EcoPrintApp) {
+class PontImpression(private val activite: MainActivity, private val app: TikeoApp) {
 
     @JavascriptInterface
     fun version(): String = VERSION
@@ -76,17 +76,17 @@ class PontImpression(private val activite: MainActivity, private val app: EcoPri
 
     private fun repondre(id: String, resultat: JSONObject) {
         Log.i(JOURNAL, "pont : réponse $id → $resultat")
-        val script = "window.__ecoprint&&window.__ecoprint.retour(${JSONObject.quote(id)},${JSONObject.quote(resultat.toString())})"
+        val script = "window.__tikeo&&window.__tikeo.retour(${JSONObject.quote(id)},${JSONObject.quote(resultat.toString())})"
         activite.runOnUiThread { activite.executer(script) }
     }
 
     private fun refus() = JSONObject()
         .put("code", "refusee")
-        .put("message", "Cette page n'est pas autorisée à imprimer : seules les adresses autorisées dans EcoPrint le sont.")
+        .put("message", "Cette page n'est pas autorisée à imprimer : seules les adresses autorisées dans Tikéo le sont.")
 
     companion object {
         /** Doit rester égale à VERSION_PONT dans src/pont.ts. */
         const val VERSION = Protocole.VERSION
-        private const val JOURNAL = "EcoPrint"
+        private const val JOURNAL = "Tikeo"
     }
 }

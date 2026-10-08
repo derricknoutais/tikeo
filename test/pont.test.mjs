@@ -6,12 +6,12 @@ import { envoyerParPont, etatPont, pontDisponible, versionPont } from '../dist/p
 
 /**
  * L'application Android simulée : ce qu'elle injecte dans la page
- * (`window.EcoPrint`), et la façon dont elle répond (en appelant
- * `window.__ecoprint.retour`).
+ * (`window.Tikeo`), et la façon dont elle répond (en appelant
+ * `window.__tikeo.retour`).
  */
 function installerApplication({ etat = { code: 'prete', message: '', largeur: 384 }, imprimer } = {}) {
     const appels = [];
-    globalThis.window.EcoPrint = {
+    globalThis.window.Tikeo = {
         version: () => '1',
         etat: () => (typeof etat === 'string' ? etat : JSON.stringify(etat)),
         imprimer(id, png, options) {
@@ -22,7 +22,7 @@ function installerApplication({ etat = { code: 'prete', message: '', largeur: 38
     return appels;
 }
 
-const repondre = (id, resultat) => globalThis.window.__ecoprint.retour(id, JSON.stringify(resultat));
+const repondre = (id, resultat) => globalThis.window.__tikeo.retour(id, JSON.stringify(resultat));
 
 beforeEach(() => {
     globalThis.window = {};
@@ -70,7 +70,7 @@ test('sans réponse, la promesse se rejette au délai — et une réponse tardiv
 
 test('une exception de l’application rejette au lieu de laisser la promesse en suspens', async () => {
     installerApplication();
-    globalThis.window.EcoPrint.imprimer = () => {
+    globalThis.window.Tikeo.imprimer = () => {
         throw new Error('Java exception');
     };
     await assert.rejects(envoyerParPont('AAAA'), (e) => e.code === 'erreur' && /Java exception/.test(e.message));

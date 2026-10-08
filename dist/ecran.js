@@ -65,7 +65,7 @@ export function afficherClient(contenu_1) {
             throw new ErreurImpression(etat.code, etat.message);
         const format = etat.capacites ? etat.capacites.afficheur : null;
         if (!format) {
-            throw new ErreurImpression('non-pris-en-charge', etat.capacites ? "Ce terminal n'a pas d'écran client." : "Cette version d'EcoPrint ne pilote pas l'écran client : la mettre à jour.");
+            throw new ErreurImpression('non-pris-en-charge', etat.capacites ? "Ce terminal n'a pas d'écran client." : "L'ancienne application EcoPrint ne pilote pas l'écran client : la remplacer par Tikéo.");
         }
         const toile = yield dessinerEcran(contenu, format, options.environnement);
         const png = toile.toDataURL('image/png');

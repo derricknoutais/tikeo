@@ -49,11 +49,11 @@ export function gris(toile) {
 }
 
 /**
- * Enregistre un aperçu PNG si ECOPRINT_APERCUS désigne un dossier — pour
+ * Enregistre un aperçu PNG si TIKEO_APERCUS désigne un dossier — pour
  * regarder de ses yeux ce que les tests dessinent. Rien n'est écrit sinon.
  */
 export function garderApercu(nom, toile) {
-    const dossier = process.env.ECOPRINT_APERCUS;
+    const dossier = process.env.TIKEO_APERCUS;
     if (!dossier) return;
     mkdirSync(dossier, { recursive: true });
     writeFileSync(join(dossier, `${nom}.png`), toile.toBuffer('image/png'));

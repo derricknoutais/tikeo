@@ -21,7 +21,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ecoprint"
+rootProject.name = "tikeo"
 include(":app")
 
 // Les pilotes vivent dans leurs propres dépôts, clonés à côté de celui-ci :

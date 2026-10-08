@@ -12,7 +12,7 @@ export class ErreurImpression extends Error {
         this.code = code;
     }
 }
-export const MESSAGE_ABSENTE = "Imprimante injoignable : l'application EcoPrint n'est pas ouverte sur ce terminal (ou ce n'est pas un terminal).";
+export const MESSAGE_ABSENTE = "Imprimante injoignable : l'application Tikéo n'est pas ouverte sur ce terminal (ou ce n'est pas un terminal).";
 export function etatAbsente() {
     return { code: 'absente', message: MESSAGE_ABSENTE, largeur: LARGEUR_58MM, transport: null };
 }

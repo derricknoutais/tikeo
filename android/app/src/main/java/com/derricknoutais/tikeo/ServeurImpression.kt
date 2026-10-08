@@ -1,4 +1,4 @@
-package com.derricknoutais.ecoprint
+package com.derricknoutais.tikeo
 
 import android.util.Log
 import org.json.JSONException
@@ -22,7 +22,7 @@ import kotlin.concurrent.thread
 /**
  * Le service d'impression local : un serveur HTTP minuscule sur 127.0.0.1,
  * pour les pages ouvertes dans le NAVIGATEUR du terminal — src/serveur.ts du
- * paquet web ecoprint.
+ * paquet web tikeo.
  *
  *   GET  /etat      → l'état de l'imprimante et les capacités du terminal
  *   POST /imprimer  → {"image": "<PNG base64>", "avance": 3, "support": "recu"|"etiquette", "copies": 1, "tiroir": false} ;
@@ -36,7 +36,7 @@ import kotlin.concurrent.thread
  * en-tête Origin ne vient pas d'un navigateur (curl, par adb) et passe.
  */
 class ServeurImpression(
-    private val app: EcoPrintApp,
+    private val app: TikeoApp,
     private val dossierSimulation: File?,
     val port: Int = PORT,
 ) {
@@ -129,7 +129,7 @@ class ServeurImpression(
                 JSONObject()
                     .put("ok", false)
                     .put("code", "refusee")
-                    .put("message", "Adresse non autorisée à imprimer : ajouter $origine dans l'application EcoPrint.")
+                    .put("message", "Adresse non autorisée à imprimer : ajouter $origine dans l'application Tikéo.")
                     .put("largeur", Pilotes.LARGEUR_58MM)
                     .toString(),
                 cors,
@@ -251,7 +251,7 @@ class ServeurImpression(
 
     companion object {
         const val PORT = 17321
-        private const val JOURNAL = "EcoPrint"
+        private const val JOURNAL = "Tikeo"
         private const val TAILLE_MAX_ENTETES = 16 * 1024
         /** Un reçu de trois mètres en PNG tient largement dedans. */
         private const val TAILLE_MAX_CORPS = 8 * 1024 * 1024
